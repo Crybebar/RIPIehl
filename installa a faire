@@ -1,0 +1,5 @@
+un peu a la bourre
+
+sudo apt-get install libsdl2-2.0-0
+sudo apt-get install freeglut3 freeglut3-dev
+sudo apt-get install libxmu-dev libxi-dev
