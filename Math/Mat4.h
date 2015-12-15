@@ -141,10 +141,10 @@ public :
         Mat4 result;
         for (unsigned char i = 0; i < 16; ++i){
             float tmp = 0;
-            for(unsigned char j = i%4; j < 16; ++j){
-                for(unsigned char k = j%4; k < 16; k+=4) {
-                    tmp += m1.mat[j] * m2.mat[k];
-                }
+            int indLine = (i/4) * 4; //trust me I'm an engineer
+            int indColumn = i%4;
+            for(int  j = 0; j < 4; ++j){
+                tmp += m1.mat[indLine + j] * m2.mat[ j * 4 + indColumn];
             }
             result.mat[i] = tmp;
         }
@@ -307,26 +307,26 @@ public :
      * Rotations
      */
     inline Mat4 RotateX(const float & x){
-        *this *= Mat4(1, 0, 0, 0,
-                      0, cosf(x), -sinf(x), 0,
-                      0, sinf(x), cosf(x), 0,
-                      0, 0, 0, 1);
+        *this = *this * Mat4(1, 0, 0, 0,
+                          0, cosf(x), -sinf(x), 0,
+                          0, sinf(x), cosf(x), 0,
+                          0, 0, 0, 1);
         return *this;
     }
 
     inline Mat4 RotateY(const float & y){
-        *this *= Mat4(cosf(y), 0, sinf(y), 0,
-                      0, 1, 0, 0,
-                      -sinf(y), 0, cosf(y), 0,
-                      0, 0, 0, 1);
+        *this = *this * Mat4(cosf(y), 0, sinf(y), 0,
+                          0, 1, 0, 0,
+                          -sinf(y), 0, cosf(y), 0,
+                          0, 0, 0, 1);
         return *this;
     }
 
     inline Mat4 RotateZ(const float & z){
-        *this *= Mat4(cosf(z), -sinf(z), 0, 0,
-                      sinf(z), cosf(z), 0, 0,
-                      0, 0, 1, 0,
-                      0, 0, 0, 1);
+        *this = *this * Mat4(cosf(z), -sinf(z), 0, 0,
+                          sinf(z), cosf(z), 0, 0,
+                          0, 0, 1, 0,
+                          0, 0, 0, 1);
         return *this;
     }
 

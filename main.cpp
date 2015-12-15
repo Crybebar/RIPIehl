@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "Math/Mat4.h"
+#include "3D_utils/camera.h"
 #include "3D_utils/Scene.h"
 
 using namespace std;
@@ -58,33 +59,14 @@ int main() {
 
 
     glViewport(0 ,0 , 800, 800);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glTranslatef(0, 0, -10);
+
+    Camera camera;
+    camera.movZ(-10);
 
     glMatrixMode(GL_PROJECTION);
-    gluPerspective(30, 1, 0.1, 1000);
-
-
+    gluPerspective(30,1, 0.1, 1000);
 
     while(!terminer){
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-        /*
-        glBegin(GL_TRIANGLES);
-        {
-            glColor3f(1.0f, 1.0f, 1.0f);
-            glVertex3f(0.0f, 1.0f, 0.f);
-            glVertex3f(-1.0f, 0.f, 0.f);
-            glVertex3f(1.0f, 0.f, 0.f);
-        }
-        glEnd();
-        */
-
-        drawOrigin();
-
-        glFlush();
 
         //if any event catch
         if( SDL_PollEvent(&evenements) == 1) {
@@ -95,30 +77,57 @@ int main() {
             if (evenements.type == SDL_KEYDOWN){
                 switch(evenements.key.keysym.sym) {
                     case SDLK_z:
-                        glMatrixMode(GL_MODELVIEW);
-                        glTranslatef(0, 0, 0.1f);
+                        camera.movZ(0.1);
                         break;
 
                     case SDLK_s:
-                        glMatrixMode(GL_MODELVIEW);
-                        glTranslatef(0, 0, -0.1f);
+                        camera.movZ(-0.1);
                         break;
 
                     case SDLK_q:
-                        glMatrixMode(GL_MODELVIEW);
-                        glTranslatef(0.1f, 0, 0);
+                        camera.movX(0.1);
                         break;
 
                     case SDLK_d:
-                        glMatrixMode(GL_MODELVIEW);
-                        glTranslatef(-0.1f, 0, 0);
+                        camera.movX(-0.1);
                         break;
+
+                    case SDLK_UP:
+                        camera.turnX(0.1);
+                        break;
+
+                    case SDLK_DOWN:
+                        camera.turnX(-0.1);
+                        break;
+
+                    case SDLK_LEFT:
+                        camera.turnY(0.1);
+                        break;
+
+                    case SDLK_RIGHT:
+                        camera.turnY(-0.1);
+                        break;
+
                     default:
                         break;
+
                 }
             }
 
         }
+
+        //on dessine
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadMatrixf((camera.model * camera.view).transposed());
+
+        //camera.projection.RotateX(0.1);
+        //std :: cout << camera.projection << std :: endl;
+
+        drawOrigin();
+
+        glFlush();
 
         // Nettoyage de l'écran
         SDL_GL_SwapWindow(fenetre);

@@ -21,14 +21,21 @@ public :
 
     //everything is public, don't need to do getters or setters
 
-    void movX(const float & f){view.mat[3] += f;}
-    void movY(const float & f){view.mat[7] += f;}
-    void movZ(const float & f){view.mat[11] += f;}
+    inline void movX(const float & f){view.mat[3] += f;}
+    inline void movY(const float & f){view.mat[7] += f;}
+    inline void movZ(const float & f){view.mat[11] += f;}
 
-    void turnX(const float & f){view.RotateX(f);}
-    void turnY(const float & f){view.RotateY(f);}
-    void turnZ(const float & f){view.RotateZ(f);}
+    inline void turnX(const float & f){view.RotateX(f);}
+    inline void turnY(const float & f){view.RotateY(f);}
+    inline void turnZ(const float & f){view.RotateZ(f);}
 
+    /*
+    inline void setGLModelView(GLfloat * modelView){
+        Mat4 tmp = (model * view).transposed();
+        for(int i = 0; i < 16; ++i)
+            modelView[i] = (GLfloat) (tmp[i]);
+    }
+    */
 
 };
 
